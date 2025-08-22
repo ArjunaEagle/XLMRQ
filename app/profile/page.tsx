@@ -79,11 +79,11 @@ export default function ProfilePage() {
   }
 
   const handleNotificationToggle = (field: string) => {
-    setNotifications((prev) => ({ ...prev, [field]: !prev[field as keyof typeof prev] }))
+    setNotifications((prev) => ({ ...prev, [field as keyof typeof prev]: !prev[field as keyof typeof prev] }))
   }
 
   const handlePrivacyToggle = (field: string) => {
-    setPrivacy((prev) => ({ ...prev, [field]: !prev[field as keyof typeof prev] }))
+    setPrivacy((prev) => ({ ...prev, [field as keyof typeof prev]: !prev[field as keyof typeof prev] }))
   }
 
   const achievements = [
@@ -120,27 +120,44 @@ export default function ProfilePage() {
         </div>
 
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              <span className="hidden sm:inline">Profile</span>
-            </TabsTrigger>
-            <TabsTrigger value="goals" className="flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              <span className="hidden sm:inline">Goals</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
-              <Bell className="w-4 h-4" />
-              <span className="hidden sm:inline">Notifications</span>
-            </TabsTrigger>
-            <TabsTrigger value="privacy" className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              <span className="hidden sm:inline">Privacy</span>
-            </TabsTrigger>
+          <TabsList className="w-full mb-8 h-auto p-1 bg-white/80 backdrop-blur-sm border border-gray-200/50 overflow-x-auto">
+            <div className="flex gap-1 min-w-max w-full md:grid md:grid-cols-5">
+              <TabsTrigger
+                value="profile"
+                className="flex items-center justify-center gap-2 min-w-[80px] h-12 px-3 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-[#4CAF50] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                <User className="w-4 h-4 flex-shrink-0" />
+                <span>Profile</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="goals"
+                className="flex items-center justify-center gap-2 min-w-[80px] h-12 px-3 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-[#4CAF50] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                <Target className="w-4 h-4 flex-shrink-0" />
+                <span>Goals</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="settings"
+                className="flex items-center justify-center gap-2 min-w-[80px] h-12 px-3 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-[#4CAF50] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                <Settings className="w-4 h-4 flex-shrink-0" />
+                <span>Settings</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="flex items-center justify-center gap-2 min-w-[95px] h-12 px-3 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-[#4CAF50] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                <Bell className="w-4 h-4 flex-shrink-0" />
+                <span>Notifications</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="privacy"
+                className="flex items-center justify-center gap-2 min-w-[80px] h-12 px-3 py-2 text-xs font-medium whitespace-nowrap data-[state=active]:bg-[#4CAF50] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-200"
+              >
+                <Shield className="w-4 h-4 flex-shrink-0" />
+                <span>Privacy</span>
+              </TabsTrigger>
+            </div>
           </TabsList>
 
           {/* Profile Tab */}
