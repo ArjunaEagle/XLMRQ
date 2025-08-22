@@ -4,7 +4,7 @@ import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Leaf, Home, BarChart3, BookOpen, User, Menu, X, Plus } from "lucide-react"
+import { Leaf, Home, BarChart3, BookOpen, User, Plus } from "lucide-react"
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -24,8 +24,8 @@ export function Navigation() {
 
   return (
     <>
-      {/* Header Navigation */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      {/* Header Navigation - Hidden on Mobile */}
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50 hidden md:block">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
@@ -36,7 +36,7 @@ export function Navigation() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
+            <nav className="flex items-center gap-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -50,43 +50,12 @@ export function Navigation() {
               ))}
             </nav>
 
-            {/* Mobile Menu Button */}
-            <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
-
             {/* Desktop CTA */}
-            <Button className="hidden md:flex bg-[#4CAF50] hover:bg-[#45a049] text-white" asChild>
+            <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" asChild>
               <Link href="/dashboard">Get Started</Link>
             </Button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t bg-white/95 backdrop-blur-sm">
-            <nav className="container mx-auto px-4 py-4 space-y-2">
-              {navItems.map((item) => {
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActiveRoute(item.href)
-                        ? "bg-[#4CAF50]/10 text-[#4CAF50] font-medium"
-                        : "text-[#2E2E2E] hover:bg-gray-100"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
-        )}
       </header>
 
       {/* Bottom Navigation - Mobile Only */}
