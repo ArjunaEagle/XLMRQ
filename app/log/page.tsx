@@ -1,21 +1,5 @@
-"use client"
-
-import type React from "react"
-
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Progress } from "@/components/ui/progress"
-import { Navigation } from "@/components/navigation"
-import { CalendarIcon, Plus, CheckCircle, Flame, Trophy, Target, TrendingUp } from "lucide-react"
-import { format, isToday, isYesterday, differenceInDays, startOfDay } from "date-fns"
-import { cn } from "@/lib/utils"
+import React, { useState, useEffect } from "react"
+import { CalendarIcon, Plus, CheckCircle, Flame, Trophy, Target, TrendingUp, Home, BarChart3, User, Smartphone } from "lucide-react"
 
 interface FoodWasteEntry {
   id: string
@@ -48,7 +32,7 @@ interface Milestone {
 
 const categories = [
   "Fruits",
-  "Vegetables",
+  "Vegetables", 
   "Dairy",
   "Meat & Poultry",
   "Seafood",
@@ -84,7 +68,7 @@ const milestones: Milestone[] = [
   },
   {
     id: "2",
-    title: "Getting Started",
+    title: "Getting Started", 
     description: "Log 5 entries",
     target: 5,
     type: "total",
@@ -127,22 +111,44 @@ const milestones: Milestone[] = [
     achieved: false,
     icon: "🌟",
   },
-  {
-    id: "7",
-    title: "Weekly Champion",
-    description: "4-week streak",
-    target: 4,
-    type: "weekly",
-    achieved: false,
-    icon: "👑",
-  },
 ]
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
+  })
+}
+
+const isToday = (date: Date) => {
+  const today = new Date()
+  return date.toDateString() === today.toDateString()
+}
+
+const isYesterday = (date: Date) => {
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  return date.toDateString() === yesterday.toDateString()
+}
+
+const differenceInDays = (date1: Date, date2: Date) => {
+  const timeDiff = Math.abs(date1.getTime() - date2.getTime())
+  return Math.ceil(timeDiff / (1000 * 3600 * 24))
+}
+
+const startOfDay = (date: Date) => {
+  const newDate = new Date(date)
+  newDate.setHours(0, 0, 0, 0)
+  return newDate
+}
 
 export default function LogPage() {
   const [entries, setEntries] = useState<FoodWasteEntry[]>([])
   const [showForm, setShowForm] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [showMilestone, setShowMilestone] = useState<Milestone | null>(null)
+  const [activeRoute, setActiveRoute] = useState("/log")
   const [streakData, setStreakData] = useState<StreakData>({
     currentStreak: 0,
     longestStreak: 0,
@@ -208,25 +214,19 @@ export default function LogPage() {
       longestStreak = Math.max(longestStreak, tempStreak)
     }
 
-    sortedEntries.forEach((entry) => {
-      const entryDate = new Date(entry.date)
-      const weekKey = `${entryDate.getFullYear()}-${Math.floor(entryDate.getDate() / 7)}`
-      weeklyStreak++
-    })
-
-    const totalItemsLogged = sortedEntries.reduce((acc, entry) => acc + Number.parseInt(entry.quantity || "0"), 0)
+    const totalItemsLogged = sortedEntries.reduce((acc, entry) => acc + parseInt(entry.quantity || "0"), 0)
 
     return {
       currentStreak,
       longestStreak,
       lastLogDate: sortedEntries[0]?.date || null,
-      weeklyStreak,
+      weeklyStreak: Math.floor(entries.length / 7),
       totalItemsLogged,
     }
   }
 
-  const checkMilestones = (newStreakData: StreakData) => {
-    const updatedMilestones = milestones.map((milestone) => {
+  const checkMilestones = (newStreakData: StreakData, currentMilestones: Milestone[]) => {
+    return currentMilestones.map((milestone) => {
       let achieved = false
       switch (milestone.type) {
         case "total":
@@ -247,14 +247,15 @@ export default function LogPage() {
 
       return { ...milestone, achieved }
     })
-
-    return updatedMilestones
   }
+
+  const [currentMilestones, setCurrentMilestones] = useState<Milestone[]>(milestones)
 
   useEffect(() => {
     const newStreakData = calculateStreak(entries)
     setStreakData(newStreakData)
-    checkMilestones(newStreakData)
+    const updatedMilestones = checkMilestones(newStreakData, currentMilestones)
+    setCurrentMilestones(updatedMilestones)
   }, [entries])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -292,102 +293,118 @@ export default function LogPage() {
     return "Keep it up!"
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
-      <Navigation />
+  const ProgressBar = ({ value, max = 100 }: { value: number; max?: number }) => (
+    <div className="w-full bg-gray-200 rounded-full h-2">
+      <div 
+        className="bg-green-500 h-2 rounded-full transition-all duration-500" 
+        style={{ width: `${Math.min((value / max) * 100, 100)}%` }}
+      ></div>
+    </div>
+  )
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white text-gray-900">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-xl border-b border-gray-200 px-4 sm:px-6 py-4 sticky top-0 z-50">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold text-green-600">FOOPTRA</h1>
+              <p className="text-xs text-gray-500">Food Waste Logger</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+            <span className="text-xs sm:text-sm text-green-600 font-medium">Tracking</span>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8 max-w-4xl pb-32 md:pb-8">
         {showSuccess && (
-          <div className="mb-6 p-4 bg-[#4CAF50]/10 border border-[#4CAF50]/20 rounded-lg flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-[#4CAF50]" />
-            <span className="text-[#4CAF50] font-medium">Food waste entry logged successfully!</span>
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="text-green-700 font-medium">Food waste entry logged successfully!</span>
           </div>
         )}
 
         {showMilestone && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-50 max-w-md w-full">
-              <CardContent className="p-8 text-center">
-                <div className="text-6xl mb-4">{showMilestone.icon}</div>
-                <h3 className="text-2xl font-serif font-bold text-[#2E2E2E] mb-2">Milestone Achieved!</h3>
-                <h4 className="text-xl font-semibold text-[#4CAF50] mb-2">{showMilestone.title}</h4>
-                <p className="text-gray-600 mb-6">{showMilestone.description}</p>
-                <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" onClick={() => setShowMilestone(null)}>
-                  Awesome!
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 text-center">
+              <div className="text-6xl mb-4">{showMilestone.icon}</div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">Milestone Achieved!</h3>
+              <h4 className="text-xl font-semibold text-green-600 mb-2">{showMilestone.title}</h4>
+              <p className="text-gray-600 mb-6">{showMilestone.description}</p>
+              <button 
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+                onClick={() => setShowMilestone(null)}
+              >
+                Awesome!
+              </button>
+            </div>
           </div>
         )}
 
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-orange-50 to-red-50">
-            <CardContent className="p-6 text-center">
-              <div className="flex items-center justify-center mb-3">
-                <Flame className="w-8 h-8 text-orange-500 mr-2" />
-                <span className="text-3xl font-bold text-orange-600">{streakData.currentStreak}</span>
-              </div>
-              <h3 className="font-serif font-semibold text-[#2E2E2E] mb-1">Current Streak</h3>
-              <p className="text-sm text-gray-600">{getStreakStatus()}</p>
-              <div className="mt-3">
-                <Progress
-                  value={(streakData.currentStreak / Math.max(streakData.longestStreak, 7)) * 100}
-                  className="h-2"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg shadow-lg p-6 text-center">
+            <div className="flex items-center justify-center mb-3">
+              <Flame className="w-8 h-8 text-orange-500 mr-2" />
+              <span className="text-3xl font-bold text-orange-600">{streakData.currentStreak}</span>
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-1">Current Streak</h3>
+            <p className="text-sm text-gray-600">{getStreakStatus()}</p>
+            <div className="mt-3">
+              <ProgressBar value={streakData.currentStreak} max={Math.max(streakData.longestStreak, 7)} />
+            </div>
+          </div>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-emerald-50">
-            <CardContent className="p-6 text-center">
-              <div className="flex items-center justify-center mb-3">
-                <Target className="w-8 h-8 text-green-500 mr-2" />
-                <span className="text-3xl font-bold text-green-600">{streakData.totalItemsLogged}</span>
-              </div>
-              <h3 className="font-serif font-semibold text-[#2E2E2E] mb-1">Items Tracked</h3>
-              <p className="text-sm text-gray-600">Total items logged</p>
-              <div className="mt-3">
-                <Progress value={Math.min((streakData.totalItemsLogged / 100) * 100, 100)} className="h-2" />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg shadow-lg p-6 text-center">
+            <div className="flex items-center justify-center mb-3">
+              <Target className="w-8 h-8 text-green-500 mr-2" />
+              <span className="text-3xl font-bold text-green-600">{streakData.totalItemsLogged}</span>
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-1">Items Tracked</h3>
+            <p className="text-sm text-gray-600">Total items logged</p>
+            <div className="mt-3">
+              <ProgressBar value={streakData.totalItemsLogged} max={100} />
+            </div>
+          </div>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
-            <CardContent className="p-6 text-center">
-              <div className="flex items-center justify-center mb-3">
-                <TrendingUp className="w-8 h-8 text-blue-500 mr-2" />
-                <span className="text-3xl font-bold text-blue-600">{streakData.weeklyStreak}</span>
-              </div>
-              <h3 className="font-serif font-semibold text-[#2E2E2E] mb-1">Weekly Streak</h3>
-              <p className="text-sm text-gray-600">Consecutive weeks</p>
-              <div className="mt-3">
-                <Progress value={(streakData.weeklyStreak / 12) * 100} className="h-2" />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-6 text-center">
+            <div className="flex items-center justify-center mb-3">
+              <TrendingUp className="w-8 h-8 text-blue-500 mr-2" />
+              <span className="text-3xl font-bold text-blue-600">{streakData.weeklyStreak}</span>
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-1">Weekly Streak</h3>
+            <p className="text-sm text-gray-600">Consecutive weeks</p>
+            <div className="mt-3">
+              <ProgressBar value={streakData.weeklyStreak} max={12} />
+            </div>
+          </div>
         </div>
 
-        <Card className="mb-8 border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-xl font-serif text-[#2E2E2E] flex items-center gap-2">
+        {/* Achievements */}
+        <div className="bg-white rounded-lg shadow-lg mb-8">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-500" />
               Achievements
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {milestones.slice(0, 8).map((milestone) => (
+            </h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {currentMilestones.map((milestone) => (
                 <div
                   key={milestone.id}
-                  className={cn(
-                    "p-4 rounded-lg text-center transition-all",
+                  className={`p-4 rounded-lg text-center transition-all ${
                     milestone.achieved
                       ? "bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200"
-                      : "bg-gray-50 border-2 border-gray-200 opacity-60",
-                  )}
+                      : "bg-gray-50 border-2 border-gray-200 opacity-60"
+                  }`}
                 >
                   <div className="text-2xl mb-2">{milestone.icon}</div>
-                  <h4 className="font-semibold text-sm text-[#2E2E2E] mb-1">{milestone.title}</h4>
+                  <h4 className="font-semibold text-sm text-gray-800 mb-1">{milestone.title}</h4>
                   <p className="text-xs text-gray-600">{milestone.description}</p>
                   {milestone.achieved && (
                     <div className="mt-2">
@@ -397,245 +414,288 @@ export default function LogPage() {
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-serif font-bold text-[#2E2E2E] mb-2">Log Food Waste</h1>
-            <p className="text-gray-600">Track your food waste to identify patterns and reduce waste</p>
           </div>
-          <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" onClick={() => setShowForm(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Entry
-          </Button>
         </div>
 
+        {/* Header with Add Button */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Log Food Waste</h1>
+            <p className="text-gray-600">Track your food waste to identify patterns and reduce waste</p>
+          </div>
+          <button 
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            onClick={() => setShowForm(true)}
+          >
+            <Plus className="w-4 h-4" />
+            Add Entry
+          </button>
+        </div>
+
+        {/* Form */}
         {showForm && (
-          <Card className="mb-8 border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-xl font-serif text-[#2E2E2E]">Add Food Waste Entry</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-lg shadow-lg mb-8">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-800">Add Food Waste Entry</h2>
+            </div>
+            <div className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="foodItem">Food Item *</Label>
-                    <Input
-                      id="foodItem"
+                    <label className="text-sm font-medium text-gray-700">Food Item *</label>
+                    <input
+                      type="text"
                       placeholder="e.g., Bananas, Leftover pasta"
                       value={formData.foodItem}
                       onChange={(e) => handleInputChange("foodItem", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="category">Category *</Label>
-                    <Select
+                    <label className="text-sm font-medium text-gray-700">Category *</label>
+                    <select
                       value={formData.category}
-                      onValueChange={(value) => handleInputChange("category", value)}
+                      onChange={(e) => handleInputChange("category", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="">Select category</option>
+                      {categories.map((category) => (
+                        <option key={category} value={category}>{category}</option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="quantity">Quantity *</Label>
-                    <Input
-                      id="quantity"
+                    <label className="text-sm font-medium text-gray-700">Quantity *</label>
+                    <input
                       type="number"
                       placeholder="e.g., 2"
                       value={formData.quantity}
                       onChange={(e) => handleInputChange("quantity", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="unit">Unit *</Label>
-                    <Select value={formData.unit} onValueChange={(value) => handleInputChange("unit", value)} required>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select unit" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {units.map((unit) => (
-                          <SelectItem key={unit} value={unit}>
-                            {unit}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="reason">Reason for Waste *</Label>
-                    <Select
-                      value={formData.reason}
-                      onValueChange={(value) => handleInputChange("reason", value)}
+                    <label className="text-sm font-medium text-gray-700">Unit *</label>
+                    <select
+                      value={formData.unit}
+                      onChange={(e) => handleInputChange("unit", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Why was it wasted?" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {reasons.map((reason) => (
-                          <SelectItem key={reason} value={reason}>
-                            {reason}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="">Select unit</option>
+                      {units.map((unit) => (
+                        <option key={unit} value={unit}>{unit}</option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Date *</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !formData.date && "text-muted-foreground",
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {formData.date ? format(formData.date, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={formData.date}
-                          onSelect={(date) => handleInputChange("date", date || new Date())}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <label className="text-sm font-medium text-gray-700">Reason for Waste *</label>
+                    <select
+                      value={formData.reason}
+                      onChange={(e) => handleInputChange("reason", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      required
+                    >
+                      <option value="">Why was it wasted?</option>
+                      {reasons.map((reason) => (
+                        <option key={reason} value={reason}>{reason}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Date *</label>
+                    <input
+                      type="date"
+                      value={formData.date.toISOString().split('T')[0]}
+                      onChange={(e) => handleInputChange("date", new Date(e.target.value))}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      required
+                    />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="notes">Additional Notes (Optional)</Label>
-                  <Textarea
-                    id="notes"
+                  <label className="text-sm font-medium text-gray-700">Additional Notes (Optional)</label>
+                  <textarea
                     placeholder="Any additional details about the waste..."
                     value={formData.notes}
                     onChange={(e) => handleInputChange("notes", e.target.value)}
                     rows={3}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
 
                 <div className="flex gap-4">
-                  <Button type="submit" className="bg-[#4CAF50] hover:bg-[#45a049] text-white">
+                  <button 
+                    type="submit" 
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+                  >
                     Log Entry
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowForm(false)}
+                    className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-lg transition-colors"
+                  >
                     Cancel
-                  </Button>
+                  </button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
+        {/* Entries List */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-serif font-bold text-[#2E2E2E]">Recent Entries</h2>
+            <h2 className="text-2xl font-bold text-gray-800">Recent Entries</h2>
             {entries.length > 0 && <span className="text-sm text-gray-500">{entries.length} entries logged</span>}
           </div>
 
           {entries.length === 0 ? (
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-12 text-center">
-                <div className="w-16 h-16 bg-[#4CAF50]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Plus className="w-8 h-8 text-[#4CAF50]" />
-                </div>
-                <h3 className="text-xl font-serif font-semibold text-[#2E2E2E] mb-2">No entries yet</h3>
-                <p className="text-gray-600 mb-6">Start tracking your food waste to see insights and reduce waste.</p>
-                <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" onClick={() => setShowForm(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Your First Entry
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Plus className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">No entries yet</h3>
+              <p className="text-gray-600 mb-6">Start tracking your food waste to see insights and reduce waste.</p>
+              <button 
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto transition-colors"
+                onClick={() => setShowForm(true)}
+              >
+                <Plus className="w-4 h-4" />
+                Add Your First Entry
+              </button>
+            </div>
           ) : (
             <div className="space-y-4">
               {entries.map((entry) => (
-                <Card key={entry.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-serif font-semibold text-[#2E2E2E]">{entry.foodItem}</h3>
-                          <span className="px-2 py-1 bg-[#4CAF50]/10 text-[#4CAF50] text-xs rounded-full">
-                            {entry.category}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
-                          <div>
-                            <span className="font-medium">Quantity:</span> {entry.quantity} {entry.unit}
-                          </div>
-                          <div>
-                            <span className="font-medium">Reason:</span> {entry.reason}
-                          </div>
-                          <div>
-                            <span className="font-medium">Date:</span> {format(entry.date, "MMM dd, yyyy")}
-                          </div>
-                        </div>
-                        {entry.notes && (
-                          <div className="mt-3 text-sm text-gray-600">
-                            <span className="font-medium">Notes:</span> {entry.notes}
-                          </div>
-                        )}
+                <div key={entry.id} className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-lg font-bold text-gray-800">{entry.foodItem}</h3>
+                        <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                          {entry.category}
+                        </span>
                       </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                        <div>
+                          <span className="font-medium">Quantity:</span> {entry.quantity} {entry.unit}
+                        </div>
+                        <div>
+                          <span className="font-medium">Reason:</span> {entry.reason}
+                        </div>
+                        <div>
+                          <span className="font-medium">Date:</span> {formatDate(entry.date)}
+                        </div>
+                      </div>
+                      {entry.notes && (
+                        <div className="mt-3 text-sm text-gray-600">
+                          <span className="font-medium">Notes:</span> {entry.notes}
+                        </div>
+                      )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           )}
         </div>
 
+        {/* Quick Stats */}
         {entries.length > 0 && (
-          <Card className="mt-8 border-0 shadow-lg bg-gradient-to-r from-[#4CAF50]/5 to-[#8BC34A]/5">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-serif font-semibold text-[#2E2E2E] mb-4">Quick Stats</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[#4CAF50] mb-1">{entries.length}</div>
-                  <div className="text-sm text-gray-600">Total Entries</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[#4CAF50] mb-1">
-                    {entries.reduce((acc, entry) => acc + Number.parseInt(entry.quantity || "0"), 0)}
-                  </div>
-                  <div className="text-sm text-gray-600">Items Wasted</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[#4CAF50] mb-1">
-                    {new Set(entries.map((entry) => entry.category)).size}
-                  </div>
-                  <div className="text-sm text-gray-600">Categories</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-[#4CAF50] mb-1">{streakData.longestStreak}</div>
-                  <div className="text-sm text-gray-600">Longest Streak</div>
-                </div>
+          <div className="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg shadow-lg p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Stats</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600 mb-1">{entries.length}</div>
+                <div className="text-sm text-gray-600">Total Entries</div>
               </div>
-            </CardContent>
-          </Card>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600 mb-1">
+                  {entries.reduce((acc, entry) => acc + parseInt(entry.quantity || "0"), 0)}
+                </div>
+                <div className="text-sm text-gray-600">Items Wasted</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600 mb-1">
+                  {new Set(entries.map((entry) => entry.category)).size}
+                </div>
+                <div className="text-sm text-gray-600">Categories</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600 mb-1">{streakData.longestStreak}</div>
+                <div className="text-sm text-gray-600">Longest Streak</div>
+              </div>
+            </div>
+          </div>
         )}
+      </div>
+
+      {/* Bottom Navigation - Mobile Only */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 md:hidden z-50 shadow-2xl">
+        <div className="flex items-center justify-around py-4 px-2">
+          <a
+            href="/"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 cursor-pointer ${
+              activeRoute === "/"
+                ? "text-green-600 bg-green-100"
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            }`}
+            onClick={() => setActiveRoute("/")}
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </a>
+
+          <a
+            href="/dashboard"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 cursor-pointer ${
+              activeRoute === "/dashboard"
+                ? "text-green-600 bg-green-100"
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            }`}
+            onClick={() => setActiveRoute("/dashboard")}
+          >
+            <BarChart3 className="w-5 h-5" />
+            <span className="text-xs font-medium">Stats</span>
+          </a>
+
+          <a
+            href="/log"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 cursor-pointer ${
+              activeRoute === "/log"
+                ? "text-green-600 bg-green-100"
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            }`}
+            onClick={() => setActiveRoute("/log")}
+          >
+            <Smartphone className="w-5 h-5" />
+            <span className="text-xs font-medium">Logs</span>
+          </a>
+
+          <a
+            href="/profile"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 cursor-pointer ${
+              activeRoute === "/profile"
+                ? "text-green-600 bg-green-100"
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            }`}
+            onClick={() => setActiveRoute("/profile")}
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </a>
+        </div>
       </div>
     </div>
   )
