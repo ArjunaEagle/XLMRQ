@@ -60,34 +60,34 @@ export function Navigation() {
 
       {/* Bottom Navigation - Mobile Only */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 md:hidden z-50 shadow-lg">
-        <div className="flex items-center justify-around py-2 px-2 safe-area-pb">
+        <div className="flex items-center justify-around py-3 px-4 safe-area-pb">
           {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+                className={`flex flex-col items-center gap-1.5 py-2.5 px-3 min-w-[60px] min-h-[56px] rounded-xl transition-all duration-200 ${
                   isActiveRoute(item.href)
                     ? "text-[#4CAF50] bg-[#4CAF50]/10"
                     : "text-gray-600 hover:text-[#4CAF50] hover:bg-gray-100"
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                <span className="text-xs font-medium truncate">{item.label}</span>
+                <Icon className="w-6 h-6 flex-shrink-0" />
+                <span className="text-[10px] font-medium leading-tight text-center">{item.label}</span>
               </Link>
             )
           })}
           <Link
             href="/profile"
-            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center gap-1.5 py-2.5 px-3 min-w-[60px] min-h-[56px] rounded-xl transition-all duration-200 ${
               isActiveRoute("/profile")
                 ? "text-[#4CAF50] bg-[#4CAF50]/10"
                 : "text-gray-600 hover:text-[#4CAF50] hover:bg-gray-100"
             }`}
           >
-            <User className="w-5 h-5" />
-            <span className="text-xs font-medium">Profile</span>
+            <User className="w-6 h-6 flex-shrink-0" />
+            <span className="text-[10px] font-medium leading-tight">Profile</span>
           </Link>
         </div>
       </div>
