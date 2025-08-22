@@ -33,10 +33,10 @@ import Link from "next/link"
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState({
-    name: "Alex Johnson",
-    email: "alex.johnson@email.com",
+    name: "Arjuna",
+    email: "arjuna.alazhar@email.com",
     bio: "Passionate about reducing food waste and living sustainably. On a mission to achieve zero waste by 2025!",
-    location: "San Francisco, CA",
+    location: "Yogyakarta",
     joinDate: "March 2024",
   })
 
