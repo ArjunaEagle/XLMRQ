@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Navigation } from "@/components/navigation"
 import {
   Search,
-  ArrowLeft,
   Lightbulb,
   ShoppingCart,
   Refrigerator,
@@ -214,26 +214,8 @@ export default function TipsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/" className="flex items-center gap-2">
-                  <ArrowLeft className="w-4 h-4" />
-                  Back
-                </Link>
-              </Button>
-              <h1 className="text-2xl font-serif font-bold text-[#2E2E2E]">Expert Tips</h1>
-            </div>
-            <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" asChild>
-              <Link href="/log">Start Logging</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
+      <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Hero Section */}

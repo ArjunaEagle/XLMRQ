@@ -180,7 +180,7 @@ export default function GrassIODashboard() {
           </div>
 
           {/* Mobile Layout */}
-          <div className="md:hidden space-y-4 sm:space-y-6 pb-24">
+          <div className="md:hidden space-y-4 sm:space-y-6 pb-32">
             {/* Main Earnings Card */}
             <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50 shadow-2xl shadow-black/20">
               <div className="text-center space-y-4">
@@ -365,48 +365,57 @@ export default function GrassIODashboard() {
       </div>
 
       {/* Bottom Navigation - Mobile Only */}
-      <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-gray-800/50 md:hidden">
-        <div className="flex items-center justify-around py-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-gray-700/80 md:hidden z-50 shadow-2xl shadow-black/50">
+        <div className="flex items-center justify-around py-4 px-2">
           <Link
             href="/"
-            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
-              pathname === "/" ? "text-green-400" : "text-gray-500 hover:text-white"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+              pathname === "/"
+                ? "text-green-400 bg-green-400/10"
+                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
             }`}
           >
             <Home className="w-5 h-5" />
-            <span className="text-xs">Home</span>
+            <span className="text-xs font-medium">Home</span>
           </Link>
 
           <Link
             href="/dashboard"
-            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
-              pathname === "/dashboard" ? "text-green-400" : "text-gray-500 hover:text-white"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+              pathname === "/dashboard"
+                ? "text-green-400 bg-green-400/10"
+                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
             }`}
           >
             <BarChart3 className="w-5 h-5" />
-            <span className="text-xs">Stats</span>
+            <span className="text-xs font-medium">Stats</span>
           </Link>
 
           <Link
             href="/log"
-            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
-              pathname === "/log" ? "text-green-400" : "text-gray-500 hover:text-white"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+              pathname === "/log"
+                ? "text-green-400 bg-green-400/10"
+                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
             }`}
           >
             <Smartphone className="w-5 h-5" />
-            <span className="text-xs">Log</span>
+            <span className="text-xs font-medium">Log</span>
           </Link>
 
           <Link
             href="/profile"
-            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
-              pathname === "/profile" ? "text-green-400" : "text-gray-500 hover:text-white"
+            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
+              pathname === "/profile"
+                ? "text-green-400 bg-green-400/10"
+                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
             }`}
           >
             <User className="w-5 h-5" />
-            <span className="text-xs">Profile</span>
+            <span className="text-xs font-medium">Profile</span>
           </Link>
         </div>
+        <div className="h-safe-area-inset-bottom bg-black/95"></div>
       </div>
 
       {/* Desktop Navigation - Large Screens Only */}

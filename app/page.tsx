@@ -1,42 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Navigation } from "@/components/navigation"
 import { Leaf, BarChart3, BookOpen, Trophy, Users, Target, Star, Quote } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#4CAF50] flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-2xl font-serif font-bold text-[#2E2E2E]">FOOPTRA</h1>
-            </div>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/dashboard" className="text-[#2E2E2E] hover:text-[#4CAF50] transition-colors">
-                Dashboard
-              </Link>
-              <Link href="/log" className="text-[#2E2E2E] hover:text-[#4CAF50] transition-colors">
-                Log Food
-              </Link>
-              <Link href="/tips" className="text-[#2E2E2E] hover:text-[#4CAF50] transition-colors">
-                Tips
-              </Link>
-              <Link href="/profile" className="text-[#2E2E2E] hover:text-[#4CAF50] transition-colors">
-                Profile
-              </Link>
-            </nav>
-            <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" asChild>
-              <Link href="/dashboard">Get Started</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
+      <Navigation />
 
       {/* Hero Section */}
       <section className="py-20 px-4">

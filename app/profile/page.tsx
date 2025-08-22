@@ -12,8 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Navigation } from "@/components/navigation"
 import {
-  ArrowLeft,
   User,
   Settings,
   Target,
@@ -29,7 +29,6 @@ import {
   TrendingDown,
   Leaf,
 } from "lucide-react"
-import Link from "next/link"
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState({
@@ -105,29 +104,21 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/" className="flex items-center gap-2">
-                  <ArrowLeft className="w-4 h-4" />
-                  Back
-                </Link>
-              </Button>
-              <h1 className="text-2xl font-serif font-bold text-[#2E2E2E]">Profile & Settings</h1>
-            </div>
-            <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white">
-              <Save className="w-4 h-4 mr-2" />
-              Save Changes
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
+      <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-[#2E2E2E] mb-2">Profile & Settings</h1>
+            <p className="text-gray-600">Manage your account, goals, and preferences</p>
+          </div>
+          <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white">
+            <Save className="w-4 h-4 mr-2" />
+            Save Changes
+          </Button>
+        </div>
+
         <Tabs defaultValue="profile" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
             <TabsTrigger value="profile" className="flex items-center gap-2">

@@ -11,9 +11,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon, Plus, ArrowLeft, CheckCircle } from "lucide-react"
+import { Navigation } from "@/components/navigation"
+import { CalendarIcon, Plus, CheckCircle } from "lucide-react"
 import { format } from "date-fns"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 interface FoodWasteEntry {
@@ -96,27 +96,8 @@ export default function LogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/" className="flex items-center gap-2">
-                  <ArrowLeft className="w-4 h-4" />
-                  Back
-                </Link>
-              </Button>
-              <h1 className="text-2xl font-serif font-bold text-[#2E2E2E]">Log Food Waste</h1>
-            </div>
-            <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" onClick={() => setShowForm(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Entry
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
+      <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Success Message */}
@@ -126,6 +107,18 @@ export default function LogPage() {
             <span className="text-[#4CAF50] font-medium">Food waste entry logged successfully!</span>
           </div>
         )}
+
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-[#2E2E2E] mb-2">Log Food Waste</h1>
+            <p className="text-gray-600">Track your food waste to identify patterns and reduce waste</p>
+          </div>
+          <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white" onClick={() => setShowForm(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Entry
+          </Button>
+        </div>
 
         {/* Add Entry Form */}
         {showForm && (
