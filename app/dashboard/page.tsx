@@ -1,19 +1,41 @@
+"use client"
+
 import { useState, useEffect } from "react"
-import { Wifi, WifiOff, Smartphone, Users, TrendingUp, Home, BarChart3, User, Copy, Check, Globe, Zap, Shield, ArrowUp, Plus, ChevronRight } from "lucide-react"
+import { useRouter, usePathname } from "next/navigation"
+import Link from "next/link"
+import {
+  Wifi,
+  Smartphone,
+  Users,
+  TrendingUp,
+  Home,
+  BarChart3,
+  User,
+  Copy,
+  Check,
+  Globe,
+  Zap,
+  Shield,
+  ArrowUp,
+  Plus,
+  ChevronRight,
+} from "lucide-react"
 
 export default function GrassIODashboard() {
   const [copied, setCopied] = useState(false)
   const [earnings, setEarnings] = useState(0)
   const [points, setPoints] = useState(0)
+  const router = useRouter()
+  const pathname = usePathname()
 
   // Animated counter effect
   useEffect(() => {
     const earnTimer = setInterval(() => {
-      setEarnings(prev => prev + Math.random() * 0.1)
+      setEarnings((prev) => prev + Math.random() * 0.1)
     }, 2000)
-    
+
     const pointsTimer = setInterval(() => {
-      setPoints(prev => prev + 1)
+      setPoints((prev) => prev + 1)
     }, 5000)
 
     return () => {
@@ -23,9 +45,17 @@ export default function GrassIODashboard() {
   }, [])
 
   const handleShare = () => {
-    navigator.clipboard.writeText("https://app.getgrass.io/register/?referralCode=user123")
+    navigator.clipboard.writeText("")
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleNavigation = (path: string) => {
+    router.push(path)
+  }
+
+  const isActiveRoute = (path: string) => {
+    return pathname === path
   }
 
   return (
@@ -34,12 +64,14 @@ export default function GrassIODashboard() {
       <header className="bg-black/80 backdrop-blur-xl border-b border-gray-800/50 px-4 sm:px-6 py-4 sticky top-0 z-50">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                Grass
-              </h1>
-              <p className="text-xs text-gray-500">Network</p>
-            </div>
+            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  FOOPTRA
+                </h1>
+                <p className="text-xs text-gray-500">Dashboard</p>
+              </div>
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
@@ -61,7 +93,7 @@ export default function GrassIODashboard() {
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                     <span className="text-green-400 text-sm font-medium">Earning</span>
                   </div>
-                  
+
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Total Earnings</p>
                     <div className="flex items-center justify-center gap-1">
@@ -95,25 +127,25 @@ export default function GrassIODashboard() {
                   <span className="text-green-400 text-sm">Connected</span>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm">Network Quality</span>
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
                       {[...Array(4)].map((_, i) => (
-                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? 'bg-green-400' : 'bg-gray-700'}`}></div>
+                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? "bg-green-400" : "bg-gray-700"}`}></div>
                       ))}
                     </div>
                     <span className="text-white text-sm">Good</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm">Bandwidth Usage</span>
                   <span className="text-white text-sm">2.3 GB</span>
                 </div>
-                
+
                 <div className="w-full bg-gray-800 rounded-full h-1.5">
                   <div className="bg-gradient-to-r from-green-400 to-emerald-400 h-1.5 rounded-full w-3/4"></div>
                 </div>
@@ -136,7 +168,7 @@ export default function GrassIODashboard() {
                   <span className="text-green-400 text-sm font-medium">15</span>
                 </div>
               </div>
-              
+
               <button
                 onClick={handleShare}
                 className="w-full bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
@@ -156,7 +188,7 @@ export default function GrassIODashboard() {
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-green-400 text-sm font-medium">Earning</span>
                 </div>
-                
+
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Total Earnings</p>
                   <div className="flex items-center justify-center gap-1">
@@ -189,25 +221,25 @@ export default function GrassIODashboard() {
                   <span className="text-green-400 text-sm">Connected</span>
                 </div>
               </div>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm">Network Quality</span>
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
                       {[...Array(4)].map((_, i) => (
-                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? 'bg-green-400' : 'bg-gray-700'}`}></div>
+                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? "bg-green-400" : "bg-gray-700"}`}></div>
                       ))}
                     </div>
                     <span className="text-white text-sm">Good</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400 text-sm">Bandwidth Usage</span>
                   <span className="text-white text-sm">2.3 GB</span>
                 </div>
-                
+
                 <div className="w-full bg-gray-800 rounded-full h-1.5 mt-3">
                   <div className="bg-gradient-to-r from-green-400 to-emerald-400 h-1.5 rounded-full w-3/4"></div>
                 </div>
@@ -230,7 +262,7 @@ export default function GrassIODashboard() {
                   <span className="text-green-400 text-sm font-medium">15</span>
                 </div>
               </div>
-              
+
               <button
                 onClick={handleShare}
                 className="w-full bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
@@ -250,7 +282,7 @@ export default function GrassIODashboard() {
               <p className="text-white font-medium text-sm sm:text-base">99.9%</p>
               <p className="text-gray-500 text-xs">Uptime</p>
             </div>
-            
+
             <div className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-4 lg:p-5 border border-gray-800/50 text-center">
               <div className="w-8 h-8 bg-purple-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <Zap className="w-4 h-4 text-purple-400" />
@@ -258,7 +290,7 @@ export default function GrassIODashboard() {
               <p className="text-white font-medium text-sm sm:text-base">156</p>
               <p className="text-gray-500 text-xs">Speed</p>
             </div>
-            
+
             <div className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-4 lg:p-5 border border-gray-800/50 text-center">
               <div className="w-8 h-8 bg-orange-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <TrendingUp className="w-4 h-4 text-orange-400" />
@@ -299,7 +331,7 @@ export default function GrassIODashboard() {
               <h3 className="text-white font-medium text-lg">Recent Activity</h3>
               <ChevronRight className="w-4 h-4 text-gray-400" />
             </div>
-            
+
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
@@ -309,7 +341,7 @@ export default function GrassIODashboard() {
                 </div>
                 <span className="text-green-400 text-sm flex-shrink-0">+0.0012</span>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0"></div>
                 <div className="flex-1 min-w-0">
@@ -318,7 +350,7 @@ export default function GrassIODashboard() {
                 </div>
                 <ArrowUp className="w-3 h-3 text-blue-400 flex-shrink-0" />
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
                 <div className="flex-1 min-w-0">
@@ -335,39 +367,105 @@ export default function GrassIODashboard() {
       {/* Bottom Navigation - Mobile Only */}
       <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-gray-800/50 md:hidden">
         <div className="flex items-center justify-around py-3">
-          <button className="flex flex-col items-center gap-1 text-green-400 p-2 min-w-0">
+          <Link
+            href="/"
+            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
+              pathname === "/" ? "text-green-400" : "text-gray-500 hover:text-white"
+            }`}
+          >
             <Home className="w-5 h-5" />
             <span className="text-xs">Home</span>
-          </button>
-          <button className="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors p-2 min-w-0">
+          </Link>
+
+          <Link
+            href="/dashboard"
+            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
+              pathname === "/dashboard" ? "text-green-400" : "text-gray-500 hover:text-white"
+            }`}
+          >
             <BarChart3 className="w-5 h-5" />
             <span className="text-xs">Stats</span>
-          </button>
-          <button className="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors p-2 min-w-0">
+          </Link>
+
+          <Link
+            href="/log"
+            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
+              pathname === "/log" ? "text-green-400" : "text-gray-500 hover:text-white"
+            }`}
+          >
             <Smartphone className="w-5 h-5" />
-            <span className="text-xs">Devices</span>
-          </button>
-          <button className="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition-colors p-2 min-w-0">
+            <span className="text-xs">Log</span>
+          </Link>
+
+          <Link
+            href="/profile"
+            className={`flex flex-col items-center gap-1 p-2 min-w-0 transition-colors ${
+              pathname === "/profile" ? "text-green-400" : "text-gray-500 hover:text-white"
+            }`}
+          >
             <User className="w-5 h-5" />
             <span className="text-xs">Profile</span>
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Desktop Navigation - Large Screens Only */}
       <div className="hidden lg:fixed lg:top-1/2 lg:left-6 lg:transform lg:-translate-y-1/2 lg:flex lg:flex-col lg:gap-4 lg:z-40">
-        <button className="w-12 h-12 bg-gray-800/80 backdrop-blur-xl rounded-xl border border-gray-700/50 flex items-center justify-center text-green-400 hover:bg-gray-700/80 transition-all">
+        <Link
+          href="/"
+          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
+            pathname === "/"
+              ? "bg-green-400/20 border-green-400/50 text-green-400"
+              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
+          }`}
+        >
           <Home className="w-5 h-5" />
-        </button>
-        <button className="w-12 h-12 bg-gray-800/80 backdrop-blur-xl rounded-xl border border-gray-700/50 flex items-center justify-center text-gray-500 hover:text-white hover:bg-gray-700/80 transition-all">
+          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Home
+          </div>
+        </Link>
+
+        <Link
+          href="/dashboard"
+          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
+            pathname === "/dashboard"
+              ? "bg-green-400/20 border-green-400/50 text-green-400"
+              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
+          }`}
+        >
           <BarChart3 className="w-5 h-5" />
-        </button>
-        <button className="w-12 h-12 bg-gray-800/80 backdrop-blur-xl rounded-xl border border-gray-700/50 flex items-center justify-center text-gray-500 hover:text-white hover:bg-gray-700/80 transition-all">
+          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Dashboard
+          </div>
+        </Link>
+
+        <Link
+          href="/log"
+          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
+            pathname === "/log"
+              ? "bg-green-400/20 border-green-400/50 text-green-400"
+              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
+          }`}
+        >
           <Smartphone className="w-5 h-5" />
-        </button>
-        <button className="w-12 h-12 bg-gray-800/80 backdrop-blur-xl rounded-xl border border-gray-700/50 flex items-center justify-center text-gray-500 hover:text-white hover:bg-gray-700/80 transition-all">
+          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Log Food
+          </div>
+        </Link>
+
+        <Link
+          href="/profile"
+          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
+            pathname === "/profile"
+              ? "bg-green-400/20 border-green-400/50 text-green-400"
+              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
+          }`}
+        >
           <User className="w-5 h-5" />
-        </button>
+          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Profile
+          </div>
+        </Link>
       </div>
     </div>
   )
