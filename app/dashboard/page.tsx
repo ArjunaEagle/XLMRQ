@@ -1,480 +1,373 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import Link from "next/link"
+import { Navigation } from "@/components/navigation"
 import {
-  Wifi,
-  Smartphone,
   Users,
   TrendingUp,
-  Home,
-  BarChart3,
-  User,
   Copy,
   Check,
   Globe,
-  Zap,
   Shield,
   ArrowUp,
   Plus,
   ChevronRight,
+  BarChart3,
+  Target,
+  Leaf,
 } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
-export default function GrassIODashboard() {
+export default function Dashboard() {
   const [copied, setCopied] = useState(false)
-  const [earnings, setEarnings] = useState(0)
-  const [points, setPoints] = useState(0)
-  const router = useRouter()
-  const pathname = usePathname()
+  const [savings, setSavings] = useState(0)
+  const [itemsTracked, setItemsTracked] = useState(0)
 
   // Animated counter effect
   useEffect(() => {
-    const earnTimer = setInterval(() => {
-      setEarnings((prev) => prev + Math.random() * 0.1)
+    const savingsTimer = setInterval(() => {
+      setSavings((prev) => prev + Math.random() * 0.5)
     }, 2000)
 
-    const pointsTimer = setInterval(() => {
-      setPoints((prev) => prev + 1)
+    const itemsTimer = setInterval(() => {
+      setItemsTracked((prev) => prev + 1)
     }, 5000)
 
     return () => {
-      clearInterval(earnTimer)
-      clearInterval(pointsTimer)
+      clearInterval(savingsTimer)
+      clearInterval(itemsTimer)
     }
   }, [])
 
   const handleShare = () => {
-    navigator.clipboard.writeText("")
+    navigator.clipboard.writeText("Join me on FOOPTRA to reduce food waste!")
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const handleNavigation = (path: string) => {
-    router.push(path)
-  }
-
-  const isActiveRoute = (path: string) => {
-    return pathname === path
-  }
-
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Header */}
-      <header className="bg-black/80 backdrop-blur-xl border-b border-gray-800/50 px-4 sm:px-6 py-4 sticky top-0 z-50">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div>
-                <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  FOOPTRA
-                </h1>
-                <p className="text-xs text-gray-500">Dashboard</p>
-              </div>
-            </Link>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-            <span className="text-xs sm:text-sm text-green-400 font-medium">Active</span>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-20 md:pb-0">
+      <Navigation />
 
       {/* Main Content Container */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-4 sm:py-6 lg:py-8">
+        <div className="py-6 lg:py-8">
+          {/* Page Header */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 bg-[#4CAF50]/10 px-4 py-2 rounded-full text-[#4CAF50] font-medium mb-4">
+              <Leaf className="w-4 h-4" />
+              Your Impact Dashboard
+            </div>
+            <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#2E2E2E] mb-2">Welcome Back to FOOPTRA</h1>
+            <p className="text-lg text-gray-600">
+              Track your progress and see the positive impact you're making on the environment.
+            </p>
+          </div>
+
           {/* Desktop/Tablet Layout */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Main Earnings Card - Takes full width on medium, spans 2 cols on large */}
+            {/* Main Savings Card */}
             <div className="md:col-span-2 lg:col-span-1">
-              <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl shadow-black/20 h-full">
-                <div className="text-center space-y-4 lg:space-y-6">
-                  <div className="inline-flex items-center gap-2 bg-green-400/10 px-3 py-1 rounded-full">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-green-400 text-sm font-medium">Earning</span>
+              <Card className="border-0 shadow-lg h-full bg-gradient-to-br from-[#4CAF50] to-[#8BC34A] text-white">
+                <CardContent className="p-6 lg:p-8">
+                  <div className="text-center space-y-4 lg:space-y-6">
+                    <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      <span className="text-white text-sm font-medium">Saving Money</span>
+                    </div>
+
+                    <div>
+                      <p className="text-white/80 text-sm mb-1">Total Savings</p>
+                      <div className="flex items-center justify-center gap-1">
+                        <span className="text-white text-xl lg:text-2xl">$</span>
+                        <span className="text-4xl lg:text-5xl font-light text-white tracking-tight">
+                          {savings.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-4">
+                      <div className="text-center">
+                        <p className="text-2xl lg:text-3xl font-light text-white">{itemsTracked}</p>
+                        <p className="text-xs text-white/70">Items Tracked</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl lg:text-3xl font-light text-white">7</p>
+                        <p className="text-xs text-white/70">Day Streak</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Food Waste Status */}
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-5 lg:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-[#2E2E2E] font-medium">Waste Reduction</h3>
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-[#4CAF50]" />
+                    <span className="text-[#4CAF50] text-sm font-medium">Improving</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 text-sm">This Week</span>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-1 h-3 rounded-full ${i < 4 ? "bg-[#4CAF50]" : "bg-gray-300"}`}
+                          ></div>
+                        ))}
+                      </div>
+                      <span className="text-[#2E2E2E] text-sm font-medium">80%</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 text-sm">Items Prevented</span>
+                    <span className="text-[#2E2E2E] text-sm font-medium">23 items</span>
+                  </div>
+
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-gradient-to-r from-[#4CAF50] to-[#8BC34A] h-2 rounded-full w-4/5"></div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Community Card */}
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-5 lg:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#4CAF50]/10 rounded-lg flex items-center justify-center">
+                      <Users className="w-4 h-4 text-[#4CAF50]" />
+                    </div>
+                    <div>
+                      <h3 className="text-[#2E2E2E] font-medium">Friends</h3>
+                      <p className="text-gray-600 text-xs">Share your progress</p>
+                    </div>
+                  </div>
+                  <div className="bg-[#4CAF50]/10 px-2 py-1 rounded-full">
+                    <span className="text-[#4CAF50] text-sm font-medium">5</span>
+                  </div>
+                </div>
+
+                <Button onClick={handleShare} className="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white font-medium">
+                  {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                  {copied ? "Link Copied!" : "Invite Friends"}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="md:hidden space-y-6 pb-32">
+            {/* Main Savings Card */}
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-[#4CAF50] to-[#8BC34A] text-white">
+              <CardContent className="p-6">
+                <div className="text-center space-y-4">
+                  <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <span className="text-white text-sm font-medium">Saving Money</span>
                   </div>
 
                   <div>
-                    <p className="text-gray-400 text-sm mb-1">Total Earnings</p>
+                    <p className="text-white/80 text-sm mb-1">Total Savings</p>
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-green-400 text-xl lg:text-2xl">$</span>
-                      <span className="text-4xl lg:text-5xl font-light text-white tracking-tight">
-                        {earnings.toFixed(4)}
-                      </span>
+                      <span className="text-white text-lg">$</span>
+                      <span className="text-3xl font-light text-white tracking-tight">{savings.toFixed(2)}</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 pt-4">
                     <div className="text-center">
-                      <p className="text-2xl lg:text-3xl font-light text-white">{points}</p>
-                      <p className="text-xs text-gray-500">Points Today</p>
+                      <p className="text-xl font-light text-white">{itemsTracked}</p>
+                      <p className="text-xs text-white/70">Items Tracked</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-2xl lg:text-3xl font-light text-white">24h</p>
-                      <p className="text-xs text-gray-500">Uptime</p>
+                      <p className="text-xl font-light text-white">7</p>
+                      <p className="text-xs text-white/70">Day Streak</p>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            {/* Connection Status */}
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-5 lg:p-6 border border-gray-800/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-medium">Connection</h3>
-                <div className="flex items-center gap-2">
-                  <Wifi className="w-4 h-4 text-green-400" />
-                  <span className="text-green-400 text-sm">Connected</span>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-sm">Network Quality</span>
+            {/* Food Waste Status */}
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-[#2E2E2E] font-medium">Waste Reduction</h3>
                   <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
-                      {[...Array(4)].map((_, i) => (
-                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? "bg-green-400" : "bg-gray-700"}`}></div>
-                      ))}
+                    <TrendingUp className="w-4 h-4 text-[#4CAF50]" />
+                    <span className="text-[#4CAF50] text-sm font-medium">Improving</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 text-sm">This Week</span>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-1 h-3 rounded-full ${i < 4 ? "bg-[#4CAF50]" : "bg-gray-300"}`}
+                          ></div>
+                        ))}
+                      </div>
+                      <span className="text-[#2E2E2E] text-sm font-medium">80%</span>
                     </div>
-                    <span className="text-white text-sm">Good</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 text-sm">Items Prevented</span>
+                    <span className="text-[#2E2E2E] text-sm font-medium">23 items</span>
+                  </div>
+
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
+                    <div className="bg-gradient-to-r from-[#4CAF50] to-[#8BC34A] h-2 rounded-full w-4/5"></div>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-sm">Bandwidth Usage</span>
-                  <span className="text-white text-sm">2.3 GB</span>
-                </div>
-
-                <div className="w-full bg-gray-800 rounded-full h-1.5">
-                  <div className="bg-gradient-to-r from-green-400 to-emerald-400 h-1.5 rounded-full w-3/4"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Referral Card */}
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-5 lg:p-6 border border-gray-800/50">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-green-400/20 rounded-lg flex items-center justify-center">
-                    <Users className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium">Referrals</h3>
-                    <p className="text-gray-400 text-xs">Earn 20% from friends</p>
-                  </div>
-                </div>
-                <div className="bg-green-400/10 px-2 py-1 rounded-full">
-                  <span className="text-green-400 text-sm font-medium">15</span>
-                </div>
-              </div>
-
-              <button
-                onClick={handleShare}
-                className="w-full bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Link Copied!" : "Share Link"}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Layout */}
-          <div className="md:hidden space-y-4 sm:space-y-6 pb-32">
-            {/* Main Earnings Card */}
-            <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 border border-gray-800/50 shadow-2xl shadow-black/20">
-              <div className="text-center space-y-4">
-                <div className="inline-flex items-center gap-2 bg-green-400/10 px-3 py-1 rounded-full">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-green-400 text-sm font-medium">Earning</span>
-                </div>
-
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Total Earnings</p>
-                  <div className="flex items-center justify-center gap-1">
-                    <span className="text-green-400 text-lg sm:text-xl">$</span>
-                    <span className="text-3xl sm:text-4xl font-light text-white tracking-tight">
-                      {earnings.toFixed(4)}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="text-center">
-                    <p className="text-xl sm:text-2xl font-light text-white">{points}</p>
-                    <p className="text-xs text-gray-500">Points Today</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xl sm:text-2xl font-light text-white">24h</p>
-                    <p className="text-xs text-gray-500">Uptime</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Connection Status */}
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-5 border border-gray-800/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-medium">Connection</h3>
-                <div className="flex items-center gap-2">
-                  <Wifi className="w-4 h-4 text-green-400" />
-                  <span className="text-green-400 text-sm">Connected</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-sm">Network Quality</span>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
-                      {[...Array(4)].map((_, i) => (
-                        <div key={i} className={`w-1 h-3 rounded-full ${i < 3 ? "bg-green-400" : "bg-gray-700"}`}></div>
-                      ))}
+            {/* Community Card */}
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#4CAF50]/10 rounded-lg flex items-center justify-center">
+                      <Users className="w-4 h-4 text-[#4CAF50]" />
                     </div>
-                    <span className="text-white text-sm">Good</span>
+                    <div>
+                      <h3 className="text-[#2E2E2E] font-medium">Friends</h3>
+                      <p className="text-gray-600 text-xs">Share your progress</p>
+                    </div>
+                  </div>
+                  <div className="bg-[#4CAF50]/10 px-2 py-1 rounded-full">
+                    <span className="text-[#4CAF50] text-sm font-medium">5</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-sm">Bandwidth Usage</span>
-                  <span className="text-white text-sm">2.3 GB</span>
-                </div>
-
-                <div className="w-full bg-gray-800 rounded-full h-1.5 mt-3">
-                  <div className="bg-gradient-to-r from-green-400 to-emerald-400 h-1.5 rounded-full w-3/4"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Referral Card */}
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-5 border border-gray-800/50">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-green-400/20 rounded-lg flex items-center justify-center">
-                    <Users className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium">Referrals</h3>
-                    <p className="text-gray-400 text-xs">Earn 20% from friends</p>
-                  </div>
-                </div>
-                <div className="bg-green-400/10 px-2 py-1 rounded-full">
-                  <span className="text-green-400 text-sm font-medium">15</span>
-                </div>
-              </div>
-
-              <button
-                onClick={handleShare}
-                className="w-full bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Link Copied!" : "Share Link"}
-              </button>
-            </div>
+                <Button onClick={handleShare} className="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white font-medium">
+                  {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                  {copied ? "Link Copied!" : "Invite Friends"}
+                </Button>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Quick Stats - Responsive Grid */}
-          <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6">
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-4 lg:p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-blue-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Shield className="w-4 h-4 text-blue-400" />
-              </div>
-              <p className="text-white font-medium text-sm sm:text-base">99.9%</p>
-              <p className="text-gray-500 text-xs">Uptime</p>
-            </div>
+          <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
+            <Card className="border-0 shadow-lg text-center">
+              <CardContent className="p-4 lg:p-5">
+                <div className="w-8 h-8 bg-[#4CAF50]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Shield className="w-4 h-4 text-[#4CAF50]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium text-sm sm:text-base">99%</p>
+                <p className="text-gray-600 text-xs">Success Rate</p>
+              </CardContent>
+            </Card>
 
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-4 lg:p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-purple-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Zap className="w-4 h-4 text-purple-400" />
-              </div>
-              <p className="text-white font-medium text-sm sm:text-base">156</p>
-              <p className="text-gray-500 text-xs">Speed</p>
-            </div>
+            <Card className="border-0 shadow-lg text-center">
+              <CardContent className="p-4 lg:p-5">
+                <div className="w-8 h-8 bg-[#FFC107]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Target className="w-4 h-4 text-[#FFC107]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium text-sm sm:text-base">156</p>
+                <p className="text-gray-600 text-xs">Goals Met</p>
+              </CardContent>
+            </Card>
 
-            <div className="bg-gray-900/50 backdrop-blur-xl rounded-xl p-4 lg:p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-orange-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <TrendingUp className="w-4 h-4 text-orange-400" />
-              </div>
-              <p className="text-white font-medium text-sm sm:text-base">+12%</p>
-              <p className="text-gray-500 text-xs">Growth</p>
-            </div>
+            <Card className="border-0 shadow-lg text-center">
+              <CardContent className="p-4 lg:p-5">
+                <div className="w-8 h-8 bg-[#8BC34A]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <TrendingUp className="w-4 h-4 text-[#8BC34A]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium text-sm sm:text-base">+12%</p>
+                <p className="text-gray-600 text-xs">Improvement</p>
+              </CardContent>
+            </Card>
 
             {/* Additional stats for larger screens */}
-            <div className="hidden lg:block bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-green-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Globe className="w-4 h-4 text-green-400" />
-              </div>
-              <p className="text-white font-medium">5</p>
-              <p className="text-gray-500 text-xs">Nodes</p>
-            </div>
+            <Card className="hidden lg:block border-0 shadow-lg text-center">
+              <CardContent className="p-5">
+                <div className="w-8 h-8 bg-[#4CAF50]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Globe className="w-4 h-4 text-[#4CAF50]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium">5kg</p>
+                <p className="text-gray-600 text-xs">CO2 Saved</p>
+              </CardContent>
+            </Card>
 
-            <div className="hidden lg:block bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-pink-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Users className="w-4 h-4 text-pink-400" />
-              </div>
-              <p className="text-white font-medium">1.2k</p>
-              <p className="text-gray-500 text-xs">Network</p>
-            </div>
+            <Card className="hidden lg:block border-0 shadow-lg text-center">
+              <CardContent className="p-5">
+                <div className="w-8 h-8 bg-[#FFC107]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <Users className="w-4 h-4 text-[#FFC107]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium">1.2k</p>
+                <p className="text-gray-600 text-xs">Community</p>
+              </CardContent>
+            </Card>
 
-            <div className="hidden lg:block bg-gray-900/50 backdrop-blur-xl rounded-xl p-5 border border-gray-800/50 text-center">
-              <div className="w-8 h-8 bg-yellow-400/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Smartphone className="w-4 h-4 text-yellow-400" />
-              </div>
-              <p className="text-white font-medium">3</p>
-              <p className="text-gray-500 text-xs">Devices</p>
-            </div>
+            <Card className="hidden lg:block border-0 shadow-lg text-center">
+              <CardContent className="p-5">
+                <div className="w-8 h-8 bg-[#8BC34A]/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <BarChart3 className="w-4 h-4 text-[#8BC34A]" />
+                </div>
+                <p className="text-[#2E2E2E] font-medium">30</p>
+                <p className="text-gray-600 text-xs">Days Active</p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Recent Activity - Full Width */}
-          <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-800/50">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-white font-medium text-lg">Recent Activity</h3>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm truncate">Bandwidth shared</p>
-                  <p className="text-gray-500 text-xs">2 minutes ago</p>
-                </div>
-                <span className="text-green-400 text-sm flex-shrink-0">+0.0012</span>
+          <Card className="border-0 shadow-lg">
+            <CardContent className="p-5 sm:p-6 lg:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-[#2E2E2E] font-medium text-lg">Recent Activity</h3>
+                <ChevronRight className="w-4 h-4 text-gray-400" />
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0"></div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm truncate">Network optimization</p>
-                  <p className="text-gray-500 text-xs">5 minutes ago</p>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#4CAF50] rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[#2E2E2E] text-sm truncate">Food waste logged</p>
+                    <p className="text-gray-600 text-xs">2 minutes ago</p>
+                  </div>
+                  <span className="text-[#4CAF50] text-sm flex-shrink-0">+$2.50</span>
                 </div>
-                <ArrowUp className="w-3 h-3 text-blue-400 flex-shrink-0" />
-              </div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm truncate">Referral joined</p>
-                  <p className="text-gray-500 text-xs">1 hour ago</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#FFC107] rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[#2E2E2E] text-sm truncate">Goal completed</p>
+                    <p className="text-gray-600 text-xs">5 minutes ago</p>
+                  </div>
+                  <ArrowUp className="w-3 h-3 text-[#FFC107] flex-shrink-0" />
                 </div>
-                <Plus className="w-3 h-3 text-purple-400 flex-shrink-0" />
+
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#8BC34A] rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[#2E2E2E] text-sm truncate">Friend joined</p>
+                    <p className="text-gray-600 text-xs">1 hour ago</p>
+                  </div>
+                  <Plus className="w-3 h-3 text-[#8BC34A] flex-shrink-0" />
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-
-      {/* Bottom Navigation - Mobile Only */}
-      <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-gray-700/80 md:hidden z-50 shadow-2xl shadow-black/50">
-        <div className="flex items-center justify-around py-4 px-2">
-          <Link
-            href="/"
-            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
-              pathname === "/"
-                ? "text-green-400 bg-green-400/10"
-                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
-            }`}
-          >
-            <Home className="w-5 h-5" />
-            <span className="text-xs font-medium">Home</span>
-          </Link>
-
-          <Link
-            href="/dashboard"
-            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
-              pathname === "/dashboard"
-                ? "text-green-400 bg-green-400/10"
-                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
-            }`}
-          >
-            <BarChart3 className="w-5 h-5" />
-            <span className="text-xs font-medium">Stats</span>
-          </Link>
-
-          <Link
-            href="/log"
-            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
-              pathname === "/log"
-                ? "text-green-400 bg-green-400/10"
-                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
-            }`}
-          >
-            <Smartphone className="w-5 h-5" />
-            <span className="text-xs font-medium">Log</span>
-          </Link>
-
-          <Link
-            href="/profile"
-            className={`flex flex-col items-center gap-1 p-3 min-w-0 rounded-xl transition-all duration-200 ${
-              pathname === "/profile"
-                ? "text-green-400 bg-green-400/10"
-                : "text-gray-400 hover:text-white hover:bg-gray-800/50"
-            }`}
-          >
-            <User className="w-5 h-5" />
-            <span className="text-xs font-medium">Profile</span>
-          </Link>
-        </div>
-        <div className="h-safe-area-inset-bottom bg-black/95"></div>
-      </div>
-
-      {/* Desktop Navigation - Large Screens Only */}
-      <div className="hidden lg:fixed lg:top-1/2 lg:left-6 lg:transform lg:-translate-y-1/2 lg:flex lg:flex-col lg:gap-4 lg:z-40">
-        <Link
-          href="/"
-          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
-            pathname === "/"
-              ? "bg-green-400/20 border-green-400/50 text-green-400"
-              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
-          }`}
-        >
-          <Home className="w-5 h-5" />
-          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Home
-          </div>
-        </Link>
-
-        <Link
-          href="/dashboard"
-          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
-            pathname === "/dashboard"
-              ? "bg-green-400/20 border-green-400/50 text-green-400"
-              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
-          }`}
-        >
-          <BarChart3 className="w-5 h-5" />
-          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Dashboard
-          </div>
-        </Link>
-
-        <Link
-          href="/log"
-          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
-            pathname === "/log"
-              ? "bg-green-400/20 border-green-400/50 text-green-400"
-              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
-          }`}
-        >
-          <Smartphone className="w-5 h-5" />
-          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Log Food
-          </div>
-        </Link>
-
-        <Link
-          href="/profile"
-          className={`group relative w-12 h-12 backdrop-blur-xl rounded-xl border flex items-center justify-center transition-all ${
-            pathname === "/profile"
-              ? "bg-green-400/20 border-green-400/50 text-green-400"
-              : "bg-gray-800/80 border-gray-700/50 text-gray-500 hover:text-white hover:bg-gray-700/80"
-          }`}
-        >
-          <User className="w-5 h-5" />
-          <div className="absolute left-16 bg-gray-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Profile
-          </div>
-        </Link>
       </div>
     </div>
   )
