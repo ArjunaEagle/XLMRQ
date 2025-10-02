@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import {
   Users,
@@ -21,24 +21,6 @@ import { Button } from "@/components/ui/button"
 
 export default function Dashboard() {
   const [copied, setCopied] = useState(false)
-  const [savings, setSavings] = useState(0)
-  const [itemsTracked, setItemsTracked] = useState(0)
-
-  // Animated counter effect
-  useEffect(() => {
-    const savingsTimer = setInterval(() => {
-      setSavings((prev) => prev + Math.random() * 0.5)
-    }, 2000)
-
-    const itemsTimer = setInterval(() => {
-      setItemsTracked((prev) => prev + 1)
-    }, 5000)
-
-    return () => {
-      clearInterval(savingsTimer)
-      clearInterval(itemsTimer)
-    }
-  }, [])
 
   const handleShare = () => {
     navigator.clipboard.writeText("Join me on FOOPTRA to reduce food waste!")
@@ -66,42 +48,7 @@ export default function Dashboard() {
           </div>
 
           {/* Desktop/Tablet Layout */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Main Savings Card */}
-            <div className="md:col-span-2 lg:col-span-1">
-              <Card className="border-0 shadow-lg h-full bg-gradient-to-br from-[#4CAF50] to-[#8BC34A] text-white">
-                <CardContent className="p-6 lg:p-8">
-                  <div className="text-center space-y-4 lg:space-y-6">
-                    <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      <span className="text-white text-sm font-medium">Saving Money</span>
-                    </div>
-
-                    <div>
-                      <p className="text-white/80 text-sm mb-1">Total Savings</p>
-                      <div className="flex items-center justify-center gap-1">
-                        <span className="text-white text-xl lg:text-2xl">$</span>
-                        <span className="text-4xl lg:text-5xl font-light text-white tracking-tight">
-                          {savings.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                      <div className="text-center">
-                        <p className="text-2xl lg:text-3xl font-light text-white">{itemsTracked}</p>
-                        <p className="text-xs text-white/70">Items Tracked</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl lg:text-3xl font-light text-white">7</p>
-                        <p className="text-xs text-white/70">Day Streak</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
+          <div className="hidden md:grid md:grid-cols-2 gap-6 mb-8">
             {/* Food Waste Status */}
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-5 lg:p-6">
@@ -169,37 +116,6 @@ export default function Dashboard() {
 
           {/* Mobile Layout */}
           <div className="md:hidden space-y-6 pb-32">
-            {/* Main Savings Card */}
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-[#4CAF50] to-[#8BC34A] text-white">
-              <CardContent className="p-6">
-                <div className="text-center space-y-4">
-                  <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
-                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                    <span className="text-white text-sm font-medium">Saving Money</span>
-                  </div>
-
-                  <div>
-                    <p className="text-white/80 text-sm mb-1">Total Savings</p>
-                    <div className="flex items-center justify-center gap-1">
-                      <span className="text-white text-lg">$</span>
-                      <span className="text-3xl font-light text-white tracking-tight">{savings.toFixed(2)}</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 pt-4">
-                    <div className="text-center">
-                      <p className="text-xl font-light text-white">{itemsTracked}</p>
-                      <p className="text-xs text-white/70">Items Tracked</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xl font-light text-white">7</p>
-                      <p className="text-xs text-white/70">Day Streak</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Food Waste Status */}
             <Card className="border-0 shadow-lg">
               <CardContent className="p-5">
@@ -344,7 +260,7 @@ export default function Dashboard() {
                     <p className="text-[#2E2E2E] text-sm truncate">Food waste logged</p>
                     <p className="text-gray-600 text-xs">2 minutes ago</p>
                   </div>
-                  <span className="text-[#4CAF50] text-sm flex-shrink-0">+$2.50</span>
+                  <span className="text-[#4CAF50] text-sm flex-shrink-0">+Rp 37.500</span>
                 </div>
 
                 <div className="flex items-center gap-3">

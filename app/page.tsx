@@ -44,14 +44,10 @@ export default function HomePage() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-[#4CAF50] mb-2">40%</div>
               <div className="text-gray-600">Food Waste Reduction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#4CAF50] mb-2">$500+</div>
-              <div className="text-gray-600">Average Annual Savings</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-[#4CAF50] mb-2">10k+</div>
