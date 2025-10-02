@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Plus, CheckCircle, Flame, Trophy, Target, TrendingUp } from "lucide-react"
+import { Plus, CheckCircle, Flame, Trophy, Target, TrendingUp, Sprout, FileText, Zap, Star } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,7 +33,7 @@ interface Milestone {
   target: number
   type: "streak" | "total" | "weekly"
   achieved: boolean
-  icon: string
+  icon: React.ComponentType<{ className?: string }>
 }
 
 const categories = [
@@ -70,7 +70,7 @@ const milestones: Milestone[] = [
     target: 1,
     type: "total",
     achieved: false,
-    icon: "🌱",
+    icon: Sprout,
   },
   {
     id: "2",
@@ -79,7 +79,7 @@ const milestones: Milestone[] = [
     target: 5,
     type: "total",
     achieved: false,
-    icon: "📝",
+    icon: FileText,
   },
   {
     id: "3",
@@ -88,7 +88,7 @@ const milestones: Milestone[] = [
     target: 3,
     type: "streak",
     achieved: false,
-    icon: "🔥",
+    icon: Flame,
   },
   {
     id: "4",
@@ -97,7 +97,7 @@ const milestones: Milestone[] = [
     target: 7,
     type: "streak",
     achieved: false,
-    icon: "⚡",
+    icon: Zap,
   },
   {
     id: "5",
@@ -106,7 +106,7 @@ const milestones: Milestone[] = [
     target: 25,
     type: "total",
     achieved: false,
-    icon: "🏆",
+    icon: Trophy,
   },
   {
     id: "6",
@@ -115,7 +115,7 @@ const milestones: Milestone[] = [
     target: 14,
     type: "streak",
     achieved: false,
-    icon: "🌟",
+    icon: Star,
   },
 ]
 
@@ -376,7 +376,9 @@ export default function LogPage() {
           {showMilestone && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 text-center">
-                <div className="text-6xl mb-4">{showMilestone.icon}</div>
+                <div className="text-6xl mb-4">
+                  <showMilestone.icon className="w-8 h-8" />
+                </div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Milestone Achieved!</h3>
                 <h4 className="text-xl font-semibold text-green-600 mb-2">{showMilestone.title}</h4>
                 <p className="text-gray-600 mb-6">{showMilestone.description}</p>
@@ -441,27 +443,38 @@ export default function LogPage() {
                 </div>
                 <div className="p-6">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {currentMilestones.map((milestone) => (
-                      <div
-                        key={milestone.id}
-                        className={`p-4 rounded-lg text-center transition-all ${
-                          milestone.achieved
-                            ? "bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 hover:-translate-y-0.5"
-                            : "bg-gray-50 border-2 border-gray-200 opacity-60 hover:opacity-80"
-                        }`}
-                      >
-                        <div className="text-2xl mb-2">{milestone.icon}</div>
-                        <h4 className="font-semibold text-sm text-gray-800 mb-1">{milestone.title}</h4>
-                        <p className="text-xs text-gray-600">{milestone.description}</p>
-                        {milestone.achieved && (
-                          <div className="mt-2">
-                            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                              Completed!
-                            </span>
+                    {currentMilestones.map((milestone) => {
+                      const IconComponent = milestone.icon
+                      return (
+                        <div
+                          key={milestone.id}
+                          className={`p-4 rounded-lg text-center transition-all duration-300 ${
+                            milestone.achieved
+                              ? "bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 hover:-translate-y-1 hover:shadow-lg"
+                              : "bg-gray-50 border-2 border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center mb-2">
+                            <IconComponent
+                              className={`w-8 h-8 transition-all duration-300 ${
+                                milestone.achieved
+                                  ? "text-[#4CAF50] hover:scale-110"
+                                  : "text-gray-400 hover:text-gray-500"
+                              }`}
+                            />
                           </div>
-                        )}
-                      </div>
-                    ))}
+                          <h4 className="font-semibold text-sm text-gray-800 mb-1">{milestone.title}</h4>
+                          <p className="text-xs text-gray-600">{milestone.description}</p>
+                          {milestone.achieved && (
+                            <div className="mt-2">
+                              <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                                Completed!
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </CardContent>
