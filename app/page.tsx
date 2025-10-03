@@ -123,7 +123,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md">
-                        S
+                        K
                       </div>
                       <div>
                         <p className="font-semibold text-[#1B5E20]">Pak Kukuh</p>
@@ -149,7 +149,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#8BC34A] to-[#AED581] rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md">
-                        M
+                        F
                       </div>
                       <div>
                         <p className="font-semibold text-[#1B5E20]">Bu Fivin</p>
@@ -174,7 +174,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#FFC107] to-[#FFD54F] rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md">
-                        A
+                        I
                       </div>
                       <div>
                         <p className="font-semibold text-[#1B5E20]">Bu Imah</p>
@@ -200,7 +200,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md">
-                        D
+                        J
                       </div>
                       <div>
                         <p className="font-semibold text-[#1B5E20]">Jokowi Widodo</p>
@@ -225,7 +225,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#8BC34A] to-[#AED581] rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md">
-                        L
+                        H
                       </div>
                       <div>
                         <p className="font-semibold text-[#1B5E20]">Hermawan Widodo</p>

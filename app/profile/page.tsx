@@ -418,8 +418,7 @@ export default function ProfilePage() {
                       <SelectContent>
                         <SelectItem value="USD">USD ($)</SelectItem>
                         <SelectItem value="EUR">EUR (€)</SelectItem>
-                        <SelectItem value="GBP">GBP (£)</SelectItem>
-                        <SelectItem value="CAD">CAD (C$)</SelectItem>
+                        <SelectItem value="IDR">IDR (£)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
