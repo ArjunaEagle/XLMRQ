@@ -126,7 +126,7 @@ export default function HomePage() {
                         S
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Kukuh</p>
+                        <p className="font-semibold text-[#1B5E20]">Pak Kukuh</p>
                         <p className="text-sm text-[#616161]">Guru Matematika</p>
                       </div>
                     </div>
@@ -152,7 +152,7 @@ export default function HomePage() {
                         M
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Fivin</p>
+                        <p className="font-semibold text-[#1B5E20]">Bu Fivin</p>
                         <p className="text-sm text-[#616161]">Guru Bahasa Indonesia</p>
                       </div>
                     </div>
@@ -177,8 +177,8 @@ export default function HomePage() {
                         A
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Anna Rodriguez</p>
-                        <p className="text-sm text-[#616161]">Mother of 3</p>
+                        <p className="font-semibold text-[#1B5E20]">Bu Imah</p>
+                        <p className="text-sm text-[#616161]">Guru Informatika</p>
                       </div>
                     </div>
                   </CardContent>
@@ -203,8 +203,8 @@ export default function HomePage() {
                         D
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">David Kim</p>
-                        <p className="text-sm text-[#616161]">College Student</p>
+                        <p className="font-semibold text-[#1B5E20]">Jokowi Widodo</p>
+                        <p className="text-sm text-[#616161]">Former President</p>
                       </div>
                     </div>
                   </CardContent>
@@ -228,7 +228,7 @@ export default function HomePage() {
                         L
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Lisa Thompson</p>
+                        <p className="font-semibold text-[#1B5E20]">Hermawan Widodo</p>
                         <p className="text-sm text-[#616161]">Environmental Activist</p>
                       </div>
                     </div>
