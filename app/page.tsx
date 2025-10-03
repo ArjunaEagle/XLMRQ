@@ -126,8 +126,8 @@ export default function HomePage() {
                         S
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Sarah Chen</p>
-                        <p className="text-sm text-[#616161]">Home Chef</p>
+                        <p className="font-semibold text-[#1B5E20]">Kukuh</p>
+                        <p className="text-sm text-[#616161]">Guru Matematika</p>
                       </div>
                     </div>
                   </CardContent>
@@ -152,8 +152,8 @@ export default function HomePage() {
                         M
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1B5E20]">Marcus Johnson</p>
-                        <p className="text-sm text-[#616161]">Restaurant Owner</p>
+                        <p className="font-semibold text-[#1B5E20]">Fivin</p>
+                        <p className="text-sm text-[#616161]">Guru Bahasa Indonesia</p>
                       </div>
                     </div>
                   </CardContent>
