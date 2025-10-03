@@ -32,8 +32,8 @@ import {
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState({
-    name: "Arjuna",
-    email: "arjuna.alazhar@email.com",
+    name: "FOOPTRA",
+    email: "FOOPTRA@email.com",
     bio: "Passionate about reducing food waste and living sustainably. On a mission to achieve zero waste by 2025!",
     location: "Yogyakarta",
     joinDate: "March 2024",
